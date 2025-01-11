@@ -2,7 +2,8 @@ import os
 
 import voyager.utils as U
 from langchain.chat_models import ChatOpenAI
-from langchain.embeddings.openai import OpenAIEmbeddings
+# from langchain.embeddings.openai import OpenAIEmbeddings
+from langchain_community.embeddings import OllamaEmbeddings
 from langchain.schema import HumanMessage, SystemMessage
 from langchain.vectorstores import Chroma
 
@@ -14,6 +15,7 @@ class SkillManager:
     def __init__(
         self,
         model_name="gpt-3.5-turbo",
+        ollama_base_url="http://localhost:11434",
         temperature=0,
         retrieval_top_k=5,
         request_timout=120,
@@ -21,6 +23,7 @@ class SkillManager:
         resume=False,
     ):
         self.llm = ChatOpenAI(
+            base_url=ollama_base_url+"/v1",
             model_name=model_name,
             temperature=temperature,
             request_timeout=request_timout,
@@ -39,7 +42,10 @@ class SkillManager:
         self.ckpt_dir = ckpt_dir
         self.vectordb = Chroma(
             collection_name="skill_vectordb",
-            embedding_function=OpenAIEmbeddings(),
+            embedding_function=OllamaEmbeddings(
+                model=model_name,
+                base_url=ollama_base_url,
+            ),
             persist_directory=f"{ckpt_dir}/skill/vectordb",
         )
         assert self.vectordb._collection.count() == len(self.skills), (

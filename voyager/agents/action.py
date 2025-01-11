@@ -15,6 +15,7 @@ class ActionAgent:
     def __init__(
         self,
         model_name="gpt-3.5-turbo",
+        ollama_base_url="http://localhost:11434",
         temperature=0,
         request_timout=120,
         ckpt_dir="ckpt",
@@ -32,6 +33,7 @@ class ActionAgent:
         else:
             self.chest_memory = {}
         self.llm = ChatOpenAI(
+            base_url=ollama_base_url+"/v1",
             model_name=model_name,
             temperature=temperature,
             request_timeout=request_timout,

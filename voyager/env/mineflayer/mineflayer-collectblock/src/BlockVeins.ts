@@ -1,7 +1,7 @@
 import { Bot } from 'mineflayer'
 import { Block } from 'prismarine-block'
 
-export function findFromVein (bot: Bot, block: Block, maxBlocks: number, maxDistance: number, floodRadius: number): Block[] {
+export function findFromVein(bot: Bot, block: Block, maxBlocks: number, maxDistance: number, floodRadius: number): Block[] {
   const targets: Block[] = []
   const open: Block[] = [block]
   const type = block.type

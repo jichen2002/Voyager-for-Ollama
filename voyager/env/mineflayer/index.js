@@ -390,7 +390,7 @@ app.post("/step", async (req, res) => {
                     "\n";
                 code_source = `at line ${match_line}:${code
                     .split("\n")
-                    [match_line - 1].trim()} in your code`;
+                [match_line - 1].trim()} in your code`;
             }
             return source + err.message + "\n" + code_source;
         }

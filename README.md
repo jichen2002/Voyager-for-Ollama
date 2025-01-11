@@ -90,6 +90,8 @@ openai_api_key = "YOUR_API_KEY"
 voyager = Voyager(
     azure_login=azure_login,
     openai_api_key=openai_api_key,
+    ollama_model="qwen2.5:32b",
+    ollama_base_url="http://localhost:11434",
 )
 
 # start lifelong learning

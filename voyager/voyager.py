@@ -48,6 +48,8 @@ class Voyager:
         ckpt_dir: str = "ckpt",
         skill_library_dir: str = None,
         resume: bool = False,
+        ollama_model: str = "llama3.2:latest",
+        ollama_base_url: str = "http://localhost:11434",
     ):
         """
         The main class for Voyager.
@@ -101,6 +103,12 @@ class Voyager:
         :param resume: whether to resume from checkpoint
         """
         # init env
+        action_agent_model_name = ollama_model
+        curriculum_agent_model_name = ollama_model
+        curriculum_agent_qa_model_name = ollama_model
+        critic_agent_model_name = ollama_model
+        skill_manager_model_name = ollama_model
+        
         self.env = VoyagerEnv(
             mc_port=mc_port,
             azure_login=azure_login,
@@ -117,6 +125,7 @@ class Voyager:
         # init agents
         self.action_agent = ActionAgent(
             model_name=action_agent_model_name,
+            ollama_base_url=ollama_base_url,
             temperature=action_agent_temperature,
             request_timout=openai_api_request_timeout,
             ckpt_dir=ckpt_dir,
@@ -127,6 +136,7 @@ class Voyager:
         self.action_agent_task_max_retries = action_agent_task_max_retries
         self.curriculum_agent = CurriculumAgent(
             model_name=curriculum_agent_model_name,
+            ollama_base_url=ollama_base_url,
             temperature=curriculum_agent_temperature,
             qa_model_name=curriculum_agent_qa_model_name,
             qa_temperature=curriculum_agent_qa_temperature,
@@ -139,12 +149,14 @@ class Voyager:
         )
         self.critic_agent = CriticAgent(
             model_name=critic_agent_model_name,
+            ollama_base_url=ollama_base_url,
             temperature=critic_agent_temperature,
             request_timout=openai_api_request_timeout,
             mode=critic_agent_mode,
         )
         self.skill_manager = SkillManager(
             model_name=skill_manager_model_name,
+            ollama_base_url=ollama_base_url,
             temperature=skill_manager_temperature,
             retrieval_top_k=skill_manager_retrieval_top_k,
             request_timout=openai_api_request_timeout,
